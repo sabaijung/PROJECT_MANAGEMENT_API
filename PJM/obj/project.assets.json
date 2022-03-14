@@ -5984,11 +5984,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\2.CODING_KRU\\PJM\\PJM\\PJM.csproj",
+      "projectUniqueName": "C:\\2.CODING_KRU\\PROJECT_MANAGEMENT_API\\PJM\\PJM.csproj",
       "projectName": "PJM",
-      "projectPath": "C:\\2.CODING_KRU\\PJM\\PJM\\PJM.csproj",
+      "projectPath": "C:\\2.CODING_KRU\\PROJECT_MANAGEMENT_API\\PJM\\PJM.csproj",
       "packagesPath": "C:\\Users\\ardsr\\.nuget\\packages\\",
-      "outputPath": "C:\\2.CODING_KRU\\PJM\\PJM\\obj\\",
+      "outputPath": "C:\\2.CODING_KRU\\PROJECT_MANAGEMENT_API\\PJM\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ardsr\\AppData\\Roaming\\NuGet\\NuGet.Config",
