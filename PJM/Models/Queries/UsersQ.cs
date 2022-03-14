@@ -115,5 +115,17 @@ namespace PJM.Models.Queries
 
             return new { StatusCode = 200, taskStatus = true, Message = "บันทึกสำเร็จ" };
         }
+
+        public async Task<object> DeleteUsers(string code)
+        {
+            User validUser = await context.Users.AsNoTracking().FirstOrDefaultAsync(a => a.Code.Equals(code));
+            if (validUser == null) return new { StatusCode = 200, taskStatus = false, Message = "ไม่พบข้อมูลผู้ใช้นี้" };
+
+            validUser.Isused = "0";
+            context.Entry(validUser).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+
+            return new { StatusCode = 200, taskStatus = true, Message = "บันทึกสำเร็จ" };
+        }
     }
 }

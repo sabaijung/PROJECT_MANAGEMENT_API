@@ -52,5 +52,19 @@ namespace PJM.Controllers
                 return BadRequest(new { StatusCode = 400, Message = e.Message });
             }
         }
+
+        [HttpDelete("DeleteUser/{id}")]
+        public async Task<IActionResult> DeleteUsers([Required] string code)
+        {
+            try
+            {
+                var result = await usersQ.DeleteUsers(code);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { StatusCode = 400, Message = e.Message });
+            }
+        }
     }
 }
