@@ -14,11 +14,12 @@ namespace PJM.Models.Queries
         {
             var value = await context.Users.Where(a => a.Isused == "1").Select(a => new {
                 a.Name,
-                a.Lastname,
-                ImageProfile = !string.IsNullOrEmpty(a.ImageProfile) ? "https://localhost:44317/" + "Profile/" + a.ImageProfile : ""
+                a.Lastname
             }).ToListAsync();
 
             return value;
+
+            // ImageProfile = !string.IsNullOrEmpty(a.ImageProfile) ? "https://localhost:44317/" + "Profile/" + a.ImageProfile : ""
         }
 
     }
