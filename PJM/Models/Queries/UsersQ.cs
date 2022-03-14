@@ -35,9 +35,9 @@ namespace PJM.Models.Queries
             return "1";
         }
 
-        public async Task<object> CreateUser(UserReq user)
+        public async Task<object> CreateUsers(UserReq user)
         {
-            string filename = "";
+            //string filename = "";
             /*if (user.ImageProfile != null)
             {
                 string WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Profile\\");

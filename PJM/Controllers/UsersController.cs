@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PJM.Models.Queries;
+using PJM.Models.Request;
 using System;
 using System.Threading.Tasks;
 
@@ -18,6 +19,19 @@ namespace PJM.Controllers
             try
             {
                 return Ok(await usersQ.GetUsers());
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { StatusCode = 400, Message = e.Message });
+            }
+        }
+
+        [HttpPost("CreateUser")]
+        public async Task<IActionResult> CreateUser([FromForm] UserReq user)
+        {
+            try
+            {
+                return Ok(await usersQ.CreateUsers(user));
             }
             catch (Exception e)
             {
