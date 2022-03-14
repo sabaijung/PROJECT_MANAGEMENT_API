@@ -54,11 +54,11 @@ namespace PJM.Controllers
         }
 
         [HttpDelete("DeleteUser/{id}")]
-        public async Task<IActionResult> DeleteUsers([Required] string code)
+        public async Task<IActionResult> DeleteUsers(string id)
         {
             try
             {
-                var result = await usersQ.DeleteUsers(code);
+                var result = await usersQ.DeleteUsers(id);
                 return Ok(result);
             }
             catch (Exception e)
