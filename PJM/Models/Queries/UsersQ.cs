@@ -14,7 +14,8 @@ namespace PJM.Models.Queries
 
         public async Task<object> GetUsers()
         {
-            var value = await context.Users.Where(a => a.Isused == "1").Select(a => new {
+            var value = await context.Users.Where(a => a.Isused == "1").Select(a => new
+            {
                 a.Name,
                 a.Lastname
             }).ToListAsync();
@@ -62,12 +63,54 @@ namespace PJM.Models.Queries
                 AmphurCode = user.AmphurCode,
                 DistrictCode = user.DistrictCode,
                 Postcode = user.PositionCode,
-               // ImageProfile = user.ImageProfile != null ? filename : "",
+                // ImageProfile = user.ImageProfile != null ? filename : "",
                 Username = user.Username,
                 Password = user.Password,
                 Isused = "1",
                 Role = user.Role
             });
+            await context.SaveChangesAsync();
+
+            return new { StatusCode = 200, taskStatus = true, Message = "บันทึกสำเร็จ" };
+        }
+
+
+        public async Task<object> UpdateUsers(string code, UserReq user)
+        {
+            User data = await context.Users.AsNoTracking().FirstOrDefaultAsync(a => a.Code.Equals(code));
+            if (data == null) return new { StatusCode = 200, taskStatus = false, Message = "ไม่พบข้อมูลผู้ใช้นี้" };
+
+            /* string filename = "";
+             if (user.ImageProfile != null)
+             {
+                 string WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Profile\\");
+                 string uploads = Path.Combine(WebRootPath);
+                 if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
+                 filename = Guid.NewGuid().ToString() + "." + user.ImageProfile.ContentType.Split("/")[1];
+                 var fileStream = new FileStream(Path.Combine(uploads, filename), FileMode.Create);
+                 await user.ImageProfile.CopyToAsync(fileStream);
+             }
+            */
+
+            data.Code = code;
+            data.InitialCode = user.InitialCode;
+            data.Name = user.Name;
+            data.Lastname = user.Lastname;
+            data.DepartmentCode = user.DepartmentCode;
+            data.PositionCode = user.PositionCode;
+            data.Mobilephone = user.Mobilephone;
+            data.Address = user.Address;
+            data.ProvinceCode = user.ProvinceCode;
+            data.AmphurCode = user.AmphurCode;
+            data.DistrictCode = user.DistrictCode;
+            data.Postcode = user.Postcode;
+            // data.ImageProfile = user.ImageProfile != null ? filename : context.Users.AsNoTracking().First(a => a.Code == code).ImageProfile;
+            data.Username = user.Username;
+            data.Password = user.Password;
+            data.Isused = user.Isused;
+            data.Role = user.Role;
+
+            context.Entry(data).State = EntityState.Modified;
             await context.SaveChangesAsync();
 
             return new { StatusCode = 200, taskStatus = true, Message = "บันทึกสำเร็จ" };
