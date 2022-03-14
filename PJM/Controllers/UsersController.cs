@@ -2,6 +2,7 @@
 using PJM.Models.Queries;
 using PJM.Models.Request;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace PJM.Controllers
@@ -32,6 +33,19 @@ namespace PJM.Controllers
             try
             {
                 return Ok(await usersQ.CreateUsers(user));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { StatusCode = 400, Message = e.Message });
+            }
+        }
+
+        [HttpPut("UpdateUser/{code}")]
+        public async Task<IActionResult> UpdateUser([Required] string code, [FromForm] UserReq user)
+        {
+            try
+            {
+                return Ok(await usersQ.UpdateUsers(code, user));
             }
             catch (Exception e)
             {
