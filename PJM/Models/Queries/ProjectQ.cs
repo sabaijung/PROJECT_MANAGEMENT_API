@@ -1,4 +1,5 @@
-﻿using PJM.Models.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using PJM.Models.Data;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,6 +44,53 @@ namespace PJM.Models.Queries
                 Data = result
             };
 
+        }
+
+        public async Task<object> CreateProject(Project p)
+        {
+            context.Projects.Add(new Project
+            {
+                ProjectName = p.ProjectName,
+                Detail = p.Detail,
+                ProjectStatus = p.ProjectStatus,
+                DateStart = p.DateStart,
+                DateEnd = p.DateEnd
+               
+            });
+            await context.SaveChangesAsync();
+
+            return new { StatusCode = 200, taskStatus = true, Message = "บันทึกสำเร็จ" };
+        }
+
+        public async Task<object> UpdateProject(int code, Project p)
+        {
+            Project data = await context.Projects.AsNoTracking().FirstOrDefaultAsync(a => a.Code.Equals(code));
+            if (data == null) return new { StatusCode = 200, taskStatus = false, Message = "ไม่พบข้อมูลผู้ใช้นี้" };
+
+
+            data.ProjectName = p.ProjectName;
+            data.Detail = p.Detail;
+            data.DateStart = p.DateStart;
+            data.DateEnd = p.DateEnd;
+            data.ProjectStatus = p.ProjectStatus;
+
+
+            context.Entry(data).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+
+            return new { StatusCode = 200, taskStatus = true, Message = "บันทึกสำเร็จ" };
+        }
+
+        public async Task<object> DeleteProject(int code)
+        {
+            Project validProject = await context.Projects.AsNoTracking().FirstOrDefaultAsync(a => a.Code.Equals(code));
+            if (validProject == null) return new { StatusCode = 200, taskStatus = false, Message = "ไม่พบข้อมูลผู้ใช้นี้" };
+
+            validProject.ProjectStatus = "0";
+            context.Entry(validProject).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+
+            return new { StatusCode = 200, taskStatus = true, Message = "บันทึกสำเร็จ" };
         }
     }
 }
