@@ -15,11 +15,11 @@ namespace PJM.Controllers
 
 
         [HttpGet("GetUsers")]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers(int pageSize = 10, int currentPage = 1, string search = "")
         {
             try
             {
-                return Ok(await usersQ.GetUsers());
+                return Ok(await usersQ.GetUsers(pageSize, currentPage, search));
             }
             catch (Exception e)
             {
