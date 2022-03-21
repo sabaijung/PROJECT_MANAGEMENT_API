@@ -11,7 +11,7 @@ namespace PJM.Controllers
     {
         private readonly DepartmentQ departmentQ = new DepartmentQ();
         [HttpGet("GetAllDeparment")]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetAllDepartment()
         {
             try
             {
