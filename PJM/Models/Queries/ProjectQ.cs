@@ -65,7 +65,7 @@ namespace PJM.Models.Queries
         public async Task<object> UpdateProject(int code, Project p)
         {
             Project data = await context.Projects.AsNoTracking().FirstOrDefaultAsync(a => a.Code.Equals(code));
-            if (data == null) return new { StatusCode = 200, taskStatus = false, Message = "ไม่พบข้อมูลผู้ใช้นี้" };
+            if (data == null) return new { StatusCode = 200, taskStatus = false, Message = "ไม่พบข้อมูลนี้" };
 
 
             data.ProjectName = p.ProjectName;
@@ -84,7 +84,7 @@ namespace PJM.Models.Queries
         public async Task<object> DeleteProject(int code)
         {
             Project validProject = await context.Projects.AsNoTracking().FirstOrDefaultAsync(a => a.Code.Equals(code));
-            if (validProject == null) return new { StatusCode = 200, taskStatus = false, Message = "ไม่พบข้อมูลผู้ใช้นี้" };
+            if (validProject == null) return new { StatusCode = 200, taskStatus = false, Message = "ไม่พบข้อมูลนี้" };
 
             validProject.ProjectStatus = "0";
             context.Entry(validProject).State = EntityState.Modified;

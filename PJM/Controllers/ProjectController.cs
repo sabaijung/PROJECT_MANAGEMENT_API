@@ -53,11 +53,11 @@ namespace PJM.Controllers
         }
 
         [HttpDelete("DeleteProject/{id}")]
-        public async Task<IActionResult> DeleteUsers(int code)
+        public async Task<IActionResult> DeleteUsers(int id)
         {
             try
             {
-                var result = await projectQ.DeleteProject(code);
+                var result = await projectQ.DeleteProject(id);
                 return Ok(result);
             }
             catch (Exception e)
