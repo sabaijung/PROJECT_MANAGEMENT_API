@@ -28,6 +28,13 @@ namespace PJM
         {
 
             services.AddControllers();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("MyCORSPolicy", builder => builder
+                 .AllowAnyHeader()
+                 .AllowAnyOrigin()
+                 .AllowAnyMethod());
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PJM", Version = "v1" });
@@ -49,7 +56,7 @@ namespace PJM
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseCors("MyCORSPolicy");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
