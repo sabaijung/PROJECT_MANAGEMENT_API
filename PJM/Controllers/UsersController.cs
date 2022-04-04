@@ -66,5 +66,18 @@ namespace PJM.Controllers
                 return BadRequest(new { StatusCode = 400, Message = e.Message });
             }
         }
+
+        [HttpGet("GetUserDetail")]
+        public async Task<IActionResult> GetUserDetail(string code)
+        {
+            try
+            {
+                return Ok(await usersQ.GetUserDetail(code));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { StatusCode = 400, Message = e.Message });
+            }
+        }
     }
 }
