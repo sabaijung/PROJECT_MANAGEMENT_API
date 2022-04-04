@@ -25,8 +25,11 @@ namespace PJM.Models.Queries
             var result = (from a in item
                           select new
                           {
+                              a.Code,
                               a.Name,
-                              a.Lastname
+                              a.Lastname,
+                              a.Username,
+                              a.Isused
 
                           });
 
@@ -160,6 +163,32 @@ namespace PJM.Models.Queries
             await context.SaveChangesAsync();
 
             return new { StatusCode = 200, taskStatus = true, Message = "บันทึกสำเร็จ" };
+        }
+
+        public async Task<object> GetUserDetail(string code)
+        {
+
+            var data = await context.Users.AsNoTracking().Select(a => new
+            {
+                a.Code,
+                a.Name,
+                a.Lastname,
+                a.Username,
+                a.Mobilephone,
+                a.DepartmentCode,
+                a.PositionCode,
+                a.Address,
+                a.DistrictCode,
+                a.AmphurCode,
+                a.ProvinceCode,
+                a.Postcode,
+                a.Role,
+                a.Isused,
+            }).FirstOrDefaultAsync(a => a.Code == code);
+
+            if (data == null) return new { StatusCode = 200, taskStatus = false, Message = "ไม่พบข้อมูลผู้ใช้นี้" };
+
+            return new { StatusCode = 200, Message = "สำเร็จ", Data = data };
         }
     }
 }
