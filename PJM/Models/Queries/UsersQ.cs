@@ -14,39 +14,43 @@ namespace PJM.Models.Queries
 
         public async Task<object> GetUsers(int pageSize = 10, int currentPage = 1, string search = "")
         {
-            var query =  context.Users.AsQueryable();
-            if (!string.IsNullOrEmpty(search))
-            {
-                query = query.Where(a => a.Name.Contains(search));
-            }
+              var query =  context.Users.AsQueryable();
+              if (!string.IsNullOrEmpty(search))
+              {
+                  query = query.Where(a => a.Name.Contains(search));
+              }
 
-            int count = query.Count();
-            var item = query.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
-            var result = (from a in item
-                          select new
-                          {
-                              a.Code,
-                              a.Name,
-                              a.Lastname,
-                              a.Username,
-                              a.Isused
+              int count = query.Count();
+              var item = query.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+              var result = (from user in item
+                         join position in context.Positions on user.PositionCode equals position.PositionCode.ToString()
+                         join dep in context.Departments on position.DepartmentCode equals dep.DepartmentCode
+                            select new
+                            {
+                                user.Code,
+                                user.Name,
+                                user.Lastname,
+                                user.InitialCode,
+                                position.PositionName,
+                                dep.DepartmentName,
+                                user.Username
+                            });
 
-                          });
-
-            return new
-            {
-                StatusCode = count == 0 ? "000" : "001",
-                Message = count == 0 ? "ไม่พบข้อมูล" : "พบข้อมูล",
-                Pagin = new
-                {
-                    totlalPage = (int)Math.Ceiling((double)count / pageSize),
-                    totalRow = count,
-                    currentPage,
-                    pageSize
-                },
-                Data = result
-            };
+              return new
+              {
+                  StatusCode = count == 0 ? "000" : "001",
+                  Message = count == 0 ? "ไม่พบข้อมูล" : "พบข้อมูล",
+                  Pagin = new
+                  {
+                      totlalPage = (int)Math.Ceiling((double)count / pageSize),
+                      totalRow = count,
+                      currentPage,
+                      pageSize
+                  },
+                  Data = result
+              };
             
+
         }
 
         public async Task<object> GetUsers1()
@@ -167,28 +171,34 @@ namespace PJM.Models.Queries
 
         public async Task<object> GetUserDetail(string code)
         {
-
-            var data = await context.Users.AsNoTracking().Select(a => new
-            {
-                a.Code,
-                a.Name,
-                a.Lastname,
-                a.Username,
-                a.Mobilephone,
-                a.DepartmentCode,
-                a.PositionCode,
-                a.Address,
-                a.DistrictCode,
-                a.AmphurCode,
-                a.ProvinceCode,
-                a.Postcode,
-                a.Role,
-                a.Isused,
-            }).FirstOrDefaultAsync(a => a.Code == code);
+            var data = (from user in context.Users
+                          join position in context.Positions on user.PositionCode equals position.PositionCode.ToString()
+                          join dep in context.Departments on position.DepartmentCode equals dep.DepartmentCode
+                          select new
+                          {
+                              user.Code,
+                              user.InitialCode,
+                              user.Name,
+                              user.Lastname,
+                              user.Mobilephone,
+                              user.DepartmentCode,
+                              user.PositionCode,
+                              user.Address,
+                              user.DistrictCode,
+                              user.AmphurCode,
+                              user.ProvinceCode,
+                              user.Postcode,
+                              user.Role,
+                              user.Isused,
+                              user.Username,
+                              user.Password,
+                              position.PositionName,
+                              dep.DepartmentName,
+                          }).FirstOrDefaultAsync(a => a.Code == code);
 
             if (data == null) return new { StatusCode = 200, taskStatus = false, Message = "ไม่พบข้อมูลผู้ใช้นี้" };
 
-            return new { StatusCode = 200, Message = "สำเร็จ", Data = data };
+            return new { StatusCode = 200, Message = "สำเร็จ", Data = data.Result };
         }
     }
 }
