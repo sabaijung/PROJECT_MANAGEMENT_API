@@ -2,6 +2,7 @@
 using PJM.Models.Data;
 using PJM.Models.Request;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,7 +34,9 @@ namespace PJM.Models.Queries
                                 user.InitialCode,
                                 position.PositionName,
                                 dep.DepartmentName,
-                                user.Username
+                                user.Username,
+                                user.Isused,
+                                ImageProfile = !string.IsNullOrEmpty(user.ImageProfile) ? "https://localhost:44318/" + "Profile/" + user.ImageProfile : ""
                             });
 
               return new
@@ -79,8 +82,8 @@ namespace PJM.Models.Queries
 
         public async Task<object> CreateUsers(UserReq user)
         {
-            //string filename = "";
-            /*if (user.ImageProfile != null)
+            string filename = "";
+            if (user.ImageProfile != null)
             {
                 string WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Profile\\");
                 string uploads = Path.Combine(WebRootPath);
@@ -88,7 +91,7 @@ namespace PJM.Models.Queries
                 filename = Guid.NewGuid().ToString() + "." + user.ImageProfile.ContentType.Split("/")[1];
                 var fileStream = new FileStream(Path.Combine(uploads, filename), FileMode.Create);
                 await user.ImageProfile.CopyToAsync(fileStream);
-            }*/
+            }
 
             context.Users.Add(new User
             {
@@ -104,7 +107,7 @@ namespace PJM.Models.Queries
                 AmphurCode = user.AmphurCode,
                 DistrictCode = user.DistrictCode,
                 Postcode = user.PositionCode,
-                // ImageProfile = user.ImageProfile != null ? filename : "",
+                ImageProfile = user.ImageProfile != null ? filename : "",
                 Username = user.Username,
                 Password = user.Password,
                 Isused = "1",
@@ -121,17 +124,17 @@ namespace PJM.Models.Queries
             User data = await context.Users.AsNoTracking().FirstOrDefaultAsync(a => a.Code.Equals(code));
             if (data == null) return new { StatusCode = 200, taskStatus = false, Message = "ไม่พบข้อมูลผู้ใช้นี้" };
 
-            /* string filename = "";
+             string filename = "";
              if (user.ImageProfile != null)
              {
-                 string WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Profile\\");
+                 string WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "Assets\\Profile\\");
                  string uploads = Path.Combine(WebRootPath);
                  if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
                  filename = Guid.NewGuid().ToString() + "." + user.ImageProfile.ContentType.Split("/")[1];
                  var fileStream = new FileStream(Path.Combine(uploads, filename), FileMode.Create);
                  await user.ImageProfile.CopyToAsync(fileStream);
              }
-            */
+            
 
             data.Code = code;
             data.InitialCode = user.InitialCode;
@@ -145,7 +148,7 @@ namespace PJM.Models.Queries
             data.AmphurCode = user.AmphurCode;
             data.DistrictCode = user.DistrictCode;
             data.Postcode = user.Postcode;
-            // data.ImageProfile = user.ImageProfile != null ? filename : context.Users.AsNoTracking().First(a => a.Code == code).ImageProfile;
+            data.ImageProfile = user.ImageProfile != null ? filename : context.Users.AsNoTracking().First(a => a.Code == code).ImageProfile;
             data.Username = user.Username;
             data.Password = user.Password;
             data.Isused = user.Isused;
@@ -194,6 +197,7 @@ namespace PJM.Models.Queries
                               user.Password,
                               position.PositionName,
                               dep.DepartmentName,
+                              ImageProfile = !string.IsNullOrEmpty(user.ImageProfile) ? "https://localhost:44318/" + "Profile/" + user.ImageProfile : ""
                           }).FirstOrDefaultAsync(a => a.Code == code);
 
             if (data == null) return new { StatusCode = 200, taskStatus = false, Message = "ไม่พบข้อมูลผู้ใช้นี้" };
