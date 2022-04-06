@@ -56,7 +56,7 @@ namespace PJM.Models.Queries
 
         }
 
-        public async Task<object> GetUsers1()
+       /* public async Task<object> GetUsers1()
         {
             var value = await context.Users.Where(a => a.Isused == "1").Select(a => new
             {
@@ -65,9 +65,7 @@ namespace PJM.Models.Queries
             }).ToListAsync();
 
             return value;
-
-            // ImageProfile = !string.IsNullOrEmpty(a.ImageProfile) ? "https://localhost:44317/" + "Profile/" + a.ImageProfile : ""
-        }
+        }*/
 
         public string GenCode()
         {
