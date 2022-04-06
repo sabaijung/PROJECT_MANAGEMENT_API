@@ -133,7 +133,6 @@ namespace PJM.Models.Queries
                  await user.ImageProfile.CopyToAsync(fileStream);
              }
             
-
             data.Code = code;
             data.InitialCode = user.InitialCode;
             data.Name = user.Name;
