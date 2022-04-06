@@ -1,4 +1,6 @@
-﻿namespace PJM.Models.Request
+﻿using Microsoft.AspNetCore.Http;
+
+namespace PJM.Models.Request
 {
     public class UserReq
     {
@@ -13,10 +15,10 @@
         public string AmphurCode { get; set; }
         public string DistrictCode { get; set; }
         public string Postcode { get; set; }
-       // public IFormFile ImageProfile { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Isused { get; set; }
         public string Role { get; set; }
+        public IFormFile ImageProfile { get; set; }
     }
 }
