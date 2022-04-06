@@ -125,8 +125,8 @@ namespace PJM.Models.Queries
              string filename = "";
              if (user.ImageProfile != null)
              {
-                 string WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "Assets\\Profile\\");
-                 string uploads = Path.Combine(WebRootPath);
+                string WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Profile\\");
+                string uploads = Path.Combine(WebRootPath);
                  if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
                  filename = Guid.NewGuid().ToString() + "." + user.ImageProfile.ContentType.Split("/")[1];
                  var fileStream = new FileStream(Path.Combine(uploads, filename), FileMode.Create);
